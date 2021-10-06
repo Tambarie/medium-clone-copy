@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/Tambarie/medium-clone/pkg/helpers/bycrypt"
 	"github.com/Tambarie/medium-clone/pkg/helpers/emailValidator"
 	"github.com/Tambarie/medium-clone/pkg/models"
@@ -15,11 +16,22 @@ import (
 //Homepage
 func (app *application) homePage(ctx *gin.Context)  {
 	ctx.HTML(http.StatusOK,"home.page.gohtml",nil)
+	cookie, err := ctx.Cookie("session")
+	if err != nil{
+		return
+	}
+	fmt.Println(cookie)
+}
+
+func (app *application) blogPage(ctx *gin.Context)  {
+	ctx.HTML(http.StatusOK,"blog.page.gohtml", nil)
 }
 //Signup page
 func (app *application) signup(ctx *gin.Context)  {
 	ctx.HTML(http.StatusOK,"signup.page.gohtml",nil)
 }
+
+
 
 //Processing the signup page
 func (app *application) signUp(ctx *gin.Context) {
@@ -86,6 +98,7 @@ func (app *application) login(ctx *gin.Context)  {
 // logs in the user
 func (app *application) loginUser(ctx *gin.Context)  {
 	user := &models.User{}
+
 	password := ctx.PostForm("password")
 	email := ctx.PostForm("email")
 
@@ -100,10 +113,19 @@ func (app *application) loginUser(ctx *gin.Context)  {
 		return
 	}
 
-
-
 	// Get user's password based on the email inputted
 	hashPassword, _ := app.user.IfPasswordExists(user, email)
+
+
+
+	userId, err := app.user.GetUserId(user,email)
+	id := userId.Id
+	if err != nil{
+		panic(err)
+	}
+
+	//Setting the cookies
+	ctx.SetCookie("session",id,60*30,"/","localhost",true,true)
 
 	//compare user's password
 	ok := bycrypt.CheckPasswordHash(password,hashPassword.Password)
@@ -114,10 +136,12 @@ func (app *application) loginUser(ctx *gin.Context)  {
 		ctx.String(200,"wrong password")
 	}
 
+
+
 }
 
-func (app *application) setCookies(ctx *gin.Context)  {
-	ctx.SetCookie("email","some-cookies",12,"/setCookies",)
+func (app *application) getFormPage(ctx *gin.Context)  {
+
 }
 
 

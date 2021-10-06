@@ -20,6 +20,8 @@ type IUserCRUD interface {
 	GetUser(u User) (users []User, err error)
 	IfEmailExists(u *User, email string) (*User, bool)
 	IfPasswordExists(u *User, password string) (*User, bool)
+	GetUserId(u *User, email string)(*User, error)
+
 	//UpdateUser(u *User)error
 	//Delete(u *User)error
 
@@ -73,5 +75,15 @@ func (db *DbModel) IfPasswordExists(u *User, email string) (*User, bool) {
 		//panic(err)
 	}
 	return u, true
+}
+
+func (db *DbModel) GetUserId(u *User, email string) (*User, error)  {
+	row := db.Db.QueryRow("SELECT id from users where email = $1", email)
+	err := row.Scan(&u.Id)
+	if err != nil{
+		return nil, err
+	}
+
+	return u, nil
 }
 
