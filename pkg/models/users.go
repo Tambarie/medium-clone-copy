@@ -19,6 +19,7 @@ type IUserCRUD interface {
 	SignUp(u User) error
 	GetUser(u User) (users []User, err error)
 	IfEmailExists(u *User, email string) (*User, bool)
+	IfPasswordExists(u *User, password string) (*User, bool)
 	//UpdateUser(u *User)error
 	//Delete(u *User)error
 
@@ -63,3 +64,14 @@ func (db *DbModel) IfEmailExists(u *User, email string) (*User, bool) {
 	}
 	return u, true
 }
+
+func (db *DbModel) IfPasswordExists(u *User, email string) (*User, bool) {
+	row := db.Db.QueryRow(`SELECT password from users where email = $1`,email)
+	err := row.Scan(&u.Password)
+	if err != nil{
+		return nil, false
+		//panic(err)
+	}
+	return u, true
+}
+

@@ -1,0 +1,39 @@
+{{template "base-layout"}}
+
+
+    <form action="/signUp" method="POST">
+    <div class="form" >
+        <div class="note">
+            <p>Sign up </p>
+        </div>
+
+        <div class="form-content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="text" name="firstname" class="form-control" placeholder="Firstname *" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="lastname" class="form-control" placeholder="Lastname *" value=""/>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="email" name="email" class="form-control" placeholder="Email *" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" class="form-control" placeholder="Password*" value=""/>
+                    </div>
+                </div>
+
+            </div>
+            <button type="submit" class="btnSubmit">Submit</button>
+        </div>
+
+    </div>
+    </form>
+
+
+{{template "footer" }}

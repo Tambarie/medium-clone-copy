@@ -10,7 +10,7 @@ import (
 
 type application struct {
 	user      models.IUserCRUD
-	userLogin models.ILogin
+
 }
 
 
