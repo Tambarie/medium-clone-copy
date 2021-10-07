@@ -42,6 +42,8 @@ func (app *application) routes() *gin.Engine{
 
 		blogRoutes.GET("/logout",app.logout)
 		blogRoutes.GET("/",app.blogPage)
+		blogRoutes.GET("/myArticles",app.myArticles)
+		blogRoutes.GET("readPost",app.readPostPage)
 		blogRoutes.GET("/form", app.getFormPage)
 		blogRoutes.POST("/postForm",app.postForm)
 		blogRoutes.GET("/edit/:id", app.editPostPage)

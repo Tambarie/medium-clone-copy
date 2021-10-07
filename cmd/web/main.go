@@ -11,6 +11,7 @@ import (
 type application struct {
 	user      models.IUserCRUD
 	post 	models.IPost
+	comment models.IComments
 }
 
 
@@ -24,7 +25,13 @@ func main()  {
 		user: &models.DbModel{
 			Db: db,
 		},
-		post: &models.PostModel{Db: db},
+		post: &models.PostModel{
+			Db: db,
+		},
+
+		comment: &models.CommentModel{
+			Db: db,
+		},
 	}
 
 	server := &http.Server{

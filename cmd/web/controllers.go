@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/Tambarie/medium-clone/pkg/helpers/bycrypt"
 	"github.com/Tambarie/medium-clone/pkg/helpers/emailValidator"
 	"github.com/Tambarie/medium-clone/pkg/models"
@@ -13,15 +12,35 @@ import (
 )
 
 
-
+////////////////////////////////USERS-CONTROLLERS///////////////////////////////////////
 //Homepage
 func (app *application) homePage(ctx *gin.Context)  {
-	ctx.HTML(http.StatusOK,"home.page.gohtml",nil)
-	cookie, err := ctx.Cookie("session")
+	posts, err := app.post.GetAllPosts()
 	if err != nil{
-		return
+		panic(err)
 	}
-	fmt.Println(cookie)
+	ctx.HTML(http.StatusOK,"home.page.gohtml",posts)
+
+}
+
+// Read blog post
+func (app *application) readPostPage(ctx *gin.Context)  {
+	ctx.HTML(200,"blog.readPost.gohtml",nil)
+}
+
+// Personalized page
+func (app application) myArticles(ctx *gin.Context)  {
+	authorId, err := ctx.Cookie("session")
+	if err != nil{
+		panic(err)
+	}
+
+	userPost := &models.Post{}
+	posts, err := app.post.GetAllPostOfAUser(userPost,authorId)
+	if err != nil{
+		panic(err)
+	}
+	ctx.HTML(http.StatusOK,"blog.myArticles.page.gohtml",posts)
 }
 
 func (app *application) blogPage(ctx *gin.Context)  {
@@ -159,6 +178,8 @@ func (app *application) getFormPage(ctx *gin.Context)  {
 }
 
 
+////////////////////////////////BLOG-CONTROLLERS///////////////////////////////////////
+
 //posts the blog to the database
 func (app *application) postForm(ctx *gin.Context)  {
 
@@ -209,10 +230,7 @@ func (app *application) editPostPage(ctx *gin.Context)  {
 	}
 	//ctx.String(200,"sorry you can't edit this post")
 	ctx.Redirect(302,"/blog")
-
-
 }
-
 
 //Edits the blog post
 func (app *application) updatePost(ctx *gin.Context)  {
@@ -256,11 +274,15 @@ func (app *application) deletePost(ctx *gin.Context)  {
 		return
 
 	}
-
 	ctx.Redirect(302,"/blog")
-
 }
 
+
+////////////////////////////////COMMENTS-CONTROLLERS///////////////////////////////////////
+
+func (app *application) addComment(ctx *gin.Context)  {
+	//comment := models.Comments{}
+}
 
 
 

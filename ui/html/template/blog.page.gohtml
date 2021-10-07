@@ -1,11 +1,18 @@
 {{template "blog-page-layout"}}
 
 {{range .}}
-   <h1>{{.Title}}</h1>
-    <h3>{{.Content}}</h3>
-   <a href="/blog/edit/{{.Id}}" type="submit">Edit</a>
-   <a href="/blog/delete/{{.Id}}" type="submit">Delete</a>
 
-       {{end}}
+<article class="blog-post">
 
+    <h2 class="blog-post-title">{{.Title}}</h2>
+    <p class="blog-post-meta">{{.CreatedAt}} <a >Mark</a></p>
+    <p>{{.Content}}</p>
+
+    <a href="/blog/edit/{{.Id}}" type="submit">Edit</a>
+    <a href="/blog/delete/{{.Id}}" type="submit">Delete</a>
+    <hr>
+    <button>Leave a comment</button>
+
+</article>
+{{end}}
 {{template "footer"}}

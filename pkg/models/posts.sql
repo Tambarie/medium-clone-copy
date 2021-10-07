@@ -1,5 +1,5 @@
 CREATE TABLE posts(
-    id TEXT not null,
+    id TEXT PRIMARY KEY not null,
     content TEXT,
     createdAt TIMESTAMP,
     title TEXT,
@@ -7,3 +7,18 @@ CREATE TABLE posts(
     authorId    TEXT,
     Foreign Key(authorId) references users(id)
     );
+
+    CREATE TABLE comments(
+        id TEXT PRIMARY KEY not null,
+        content TEXT,
+        createdAt TEXT,
+        authorId    TEXT,
+        postId      TEXT,
+        Foreign Key(authorId) references users(id),
+        Foreign Key(postId) references posts(id)
+        );
+
+
+// Change the value of a column of a table
+        ALTER TABLE posts
+        ADD PRIMARY KEY (id);

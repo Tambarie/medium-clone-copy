@@ -21,6 +21,7 @@ type IPost interface {
 	GetAllPosts() (posts []Post, err error)
 	DeletePost(id string) (err error)
 	UpdatePost(post *Post)(err error)
+	GetAllPostOfAUser(post *Post,id string)(posts []Post, err error)
 	//SharePostLink()
 }
 
@@ -54,6 +55,23 @@ func (db *PostModel) GetAllPosts() (posts []Post, err error) {
 	return posts,nil
 }
 
+func (db *PostModel)GetAllPostOfAUser(post *Post,id string)(posts []Post, err error) {
+	rows , err := db.Db.Query(`SELECT id, content, createdat,title,updatedat FROM posts WHERE authorid = $1`, id)
+
+	if err != nil{
+		return nil,err
+	}
+	for rows.Next() {
+		p := Post{}
+		err = rows.Scan(&p.Id,&p.Content,&p.CreatedAt,&p.Title,&p.UpdatedAt)
+		if err != nil{
+			return nil, err
+		}
+		posts = append(posts,p)
+	}
+	rows.Close()
+	return posts, nil
+}
 
 func (db *PostModel) GetAPost(post *Post,id string) *Post {
 	row := db.Db.QueryRow(`SELECT id, title, content , authorid FROM posts WHERE id = $1`,id)
