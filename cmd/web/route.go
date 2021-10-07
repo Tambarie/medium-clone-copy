@@ -30,13 +30,25 @@ func (app *application) routes() *gin.Engine{
 	//Testing cookies'
 	//router.GET("/cookies", app.setCookies)
 
+	//router.GET("/router",middlewares.CheckLogin(), app.logout)
+
 
 	// Blog Pages
 
 	blogRoutes := router.Group("/blog")
 	{
+
+		blogRoutes.Use(middlewares.CheckLogin())
+
+		blogRoutes.GET("/logout",app.logout)
 		blogRoutes.GET("/",app.blogPage)
 		blogRoutes.GET("/form", app.getFormPage)
+		blogRoutes.POST("/postForm",app.postForm)
+		blogRoutes.GET("/edit/:id", app.editPostPage)
+		blogRoutes.POST("/updatePost/:id",app.updatePost)
+		blogRoutes.GET("/delete/:id",app.deletePost)
+
+
 	}
 
 	return router

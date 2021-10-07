@@ -1,8 +1,11 @@
 {{template "blog-page-layout"}}
 
+{{range .}}
+   <h1>{{.Title}}</h1>
+    <h3>{{.Content}}</h3>
+   <a href="/blog/edit/{{.Id}}" type="submit">Edit</a>
+   <a href="/blog/delete/{{.Id}}" type="submit">Delete</a>
 
-    <h2>
-        User page
-    </h2>
+       {{end}}
 
 {{template "footer"}}

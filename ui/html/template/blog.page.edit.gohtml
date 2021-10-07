@@ -1,0 +1,8 @@
+{{template "blog-page-layout"}}
+<form action="/blog/updatePost/{{.Id}}" method="post">
+    <label for="title">Title of Article</label><br>
+    <input type="text" id="title" name="title"  value={{.Title}}> <br>
+    <label for="article">Article</label><br>
+    <textarea name="content" id="article">{{.Content}}</textarea>
+    <input type="submit" value="Update">
+</form>

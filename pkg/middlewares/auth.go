@@ -9,7 +9,7 @@ func CheckLogin() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		session, err := ctx.Cookie("session")
 		if err != nil{
-			ctx.Redirect(http.StatusFound, "/login")
+			ctx.Redirect(http.StatusFound, "/")
 			return
 		}
 		ctx.Set("userId", session)

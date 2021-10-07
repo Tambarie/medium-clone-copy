@@ -24,6 +24,7 @@ func main()  {
 		user: &models.DbModel{
 			Db: db,
 		},
+		post: &models.PostModel{Db: db},
 	}
 
 	server := &http.Server{
