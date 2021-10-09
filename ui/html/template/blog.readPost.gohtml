@@ -1,26 +1,35 @@
 {{template "blog-page-layout"}}
 
-{{range .}}
+
 
     <article class="blog-post">
-        <h2 class="blog-post-title">{{.Title}}</h2>
-        <p class="blog-post-meta">{{.CreatedAt}} <a >Mark</a></p>
+        <h2 class="blog-post-title">{{.post.Title}}</h2>
+        <p class="blog-post-meta">{{.post.CreatedAt}} <a >Mark</a></p>
 
-        <p>{{.Content}}</p>
-        <a href="/blog/edit/{{.Id}}" type="submit">Edit</a>
-        <a href="/blog/delete/{{.Id}}" type="submit">Delete</a>
+        <p>{{.post.Content}}</p>
+        <a href="/blog/edit/{{.post.Id}}" type="submit">Edit</a>
+        <a href="/blog/delete/{{.post.Id}}" type="submit">Delete</a>
         <hr>
 
         <div>
-            <label for="comments">Add comments</label>
 
-            <textarea id="comments" name="comments" rows="4" cols="50">
-At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.
-</textarea>
-            <button>Add comment</button>
+            <label for="comments">Add comments</label>
+            <form action="/blog/comment/{{.post.Id}}" method="post">
+                 <textarea id="comments" name="comment" rows="4" cols="50">
+
+            </textarea>
+                <button type="submit">Add comment</button>
+            </form>
+
         </div>
 
 
     </article>
-{{end}}
+    <p>Comments</p>
+    {{range .comment}}
+    <article>
+       <p>{{.Content}}</p>
+    </article>
+        {{end}}
+
 {{template "footer"}}

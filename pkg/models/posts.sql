@@ -22,3 +22,9 @@ CREATE TABLE posts(
 // Change the value of a column of a table
         ALTER TABLE posts
         ADD PRIMARY KEY (id);
+
+
+ Adding column to a table
+
+ ALTER TABLE posts
+ ADD display    TEXT;

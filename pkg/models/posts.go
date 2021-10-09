@@ -13,6 +13,7 @@ type Post struct {
 	CreatedAt string `json:"created_at"`
 	UpdatedAt string `json:"updated_at"`
 	Author string `json:"author"`
+	Display bool `json:"display"`
 }
 
 type IPost interface {

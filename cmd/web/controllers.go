@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/Tambarie/medium-clone/pkg/helpers/bycrypt"
 	"github.com/Tambarie/medium-clone/pkg/helpers/emailValidator"
 	"github.com/Tambarie/medium-clone/pkg/models"
@@ -19,17 +20,35 @@ func (app *application) homePage(ctx *gin.Context)  {
 	if err != nil{
 		panic(err)
 	}
-	ctx.HTML(http.StatusOK,"home.page.gohtml",posts)
+	data  := gin.H{
+		"data":posts,
+	}
+	ctx.HTML(http.StatusOK,"home.page.gohtml",data)
 
 }
 
 // Read blog post
 func (app *application) readPostPage(ctx *gin.Context)  {
-	ctx.HTML(200,"blog.readPost.gohtml",nil)
+	post := &models.Post{}
+	postId := ctx.Param("id")
+
+	singlePost := app.post.GetAPost(post,postId)
+	fmt.Println("postId",singlePost)
+	comments, err := app.comment.GetAllComments(postId)
+	if err != nil{
+		panic(err)
+	}
+	fmt.Println("comments",comments)
+	data  := gin.H{
+		"post": singlePost,
+		"comment":comments,
+	}
+	fmt.Println("data",data)
+	ctx.HTML(200,"blog.readPost.gohtml",data)
 }
 
 // Personalized page
-func (app application) myArticles(ctx *gin.Context)  {
+func (app *application) myArticles(ctx *gin.Context)  {
 	authorId, err := ctx.Cookie("session")
 	if err != nil{
 		panic(err)
@@ -37,10 +56,14 @@ func (app application) myArticles(ctx *gin.Context)  {
 
 	userPost := &models.Post{}
 	posts, err := app.post.GetAllPostOfAUser(userPost,authorId)
+
+	data := gin.H{
+		"data":posts,
+	}
 	if err != nil{
 		panic(err)
 	}
-	ctx.HTML(http.StatusOK,"blog.myArticles.page.gohtml",posts)
+	ctx.HTML(http.StatusOK,"blog.myArticles.page.gohtml",data)
 }
 
 func (app *application) blogPage(ctx *gin.Context)  {
@@ -50,7 +73,11 @@ func (app *application) blogPage(ctx *gin.Context)  {
 	if err != nil{
 		panic(err)
 	}
-	ctx.HTML(http.StatusOK,"blog.page.gohtml", posts)
+
+	data := gin.H{
+		"data":posts,
+	}
+	ctx.HTML(http.StatusOK,"blog.page.gohtml", data)
 }
 //Signup page
 func (app *application) signup(ctx *gin.Context)  {
@@ -281,7 +308,29 @@ func (app *application) deletePost(ctx *gin.Context)  {
 ////////////////////////////////COMMENTS-CONTROLLERS///////////////////////////////////////
 
 func (app *application) addComment(ctx *gin.Context)  {
-	//comment := models.Comments{}
+
+	authorId, err := ctx.Cookie("session")
+	if err != nil{
+		panic(err)
+	}
+	commentBox := ctx.PostForm("comment")
+	postId := ctx.Param("id")
+	fmt.Println(postId)
+
+	comment := &models.Comments{
+		CommentId:uuid.New().String(),
+		Content:  commentBox,
+		CreatedAt: time.Now().Format(time.RFC822),
+		AuthorId: authorId,
+		PostId:  postId ,
+	}
+
+	err = app.comment.CreateComments(comment)
+	if err != nil{
+		panic(err)
+	}
+
+	ctx.Redirect(302,"/blog")
 }
 
 

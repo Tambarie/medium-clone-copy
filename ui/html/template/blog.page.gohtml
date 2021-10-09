@@ -1,18 +1,15 @@
 {{template "blog-page-layout"}}
 
-{{range .}}
-
+{{range .data}}
 <article class="blog-post">
-
-    <h2 class="blog-post-title">{{.Title}}</h2>
+<a href="/blog/readPost/{{.Id}}">
+    <h2 class="blog-post-title">{{ .Title}}</h2>
     <p class="blog-post-meta">{{.CreatedAt}} <a >Mark</a></p>
     <p>{{.Content}}</p>
-
+</a>
     <a href="/blog/edit/{{.Id}}" type="submit">Edit</a>
     <a href="/blog/delete/{{.Id}}" type="submit">Delete</a>
     <hr>
-    <button>Leave a comment</button>
-
 </article>
 {{end}}
 {{template "footer"}}

@@ -39,19 +39,23 @@ func (app *application) routes() *gin.Engine{
 	{
 
 		blogRoutes.Use(middlewares.CheckLogin())
-
+		blogRoutes.GET("/readPost/:id",app.readPostPage)
 		blogRoutes.GET("/logout",app.logout)
 		blogRoutes.GET("/",app.blogPage)
 		blogRoutes.GET("/myArticles",app.myArticles)
-		blogRoutes.GET("readPost",app.readPostPage)
+
 		blogRoutes.GET("/form", app.getFormPage)
 		blogRoutes.POST("/postForm",app.postForm)
 		blogRoutes.GET("/edit/:id", app.editPostPage)
 		blogRoutes.POST("/updatePost/:id",app.updatePost)
 		blogRoutes.GET("/delete/:id",app.deletePost)
 
+		blogRoutes.POST("/comment/:id",app.addComment)
+
 
 	}
+
+
 
 	return router
 }
