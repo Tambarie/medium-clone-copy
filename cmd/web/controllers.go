@@ -187,7 +187,7 @@ func (app *application) loginUser(ctx *gin.Context)  {
 	id := userId.Id
 
 	//Setting the cookies
-	ctx.SetCookie("session",id,60*30,"/","localhost",true,true)
+	ctx.SetCookie("session",id,1800,"/","localhost",true,true)
 	//compare user's password
 	ok := bycrypt.CheckPasswordHash(password,hashPassword.Password)
 	if ok{

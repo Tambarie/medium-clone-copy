@@ -9,10 +9,6 @@ func (app *application) routes() *gin.Engine{
 	router := gin.Default()
 	router.LoadHTMLGlob("ui/html/**/*")
 
-	//homepage
-
-
-
 	router.GET("/",middlewares.CheckNotLogin(),app.homePage)
 
 	// gets the signup page
@@ -54,8 +50,6 @@ func (app *application) routes() *gin.Engine{
 
 
 	}
-
-
 
 	return router
 }
